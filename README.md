@@ -6,7 +6,7 @@ A top-down 2D zombie survival shooter built with **Unity 6 + Universal Render Pi
 
 ## Features
 
-- **Photon Fusion Shared Mode** – no dedicated server required; every player is a peer
+- **Photon Fusion Shared Mode** – no dedicated server required; one player acts as the Shared Mode Master Client with authority over shared objects (zombies, wave manager) while all clients simulate their own player
 - **Input-authoritative player movement** – WASD / gamepad stick; mouse-aim rotation synced to all clients
 - **Hitscan shooting** via Fusion's lag-compensated raycast
 - **Zombie AI** driven by the "Zombie Master" (the player with State Authority over all zombie objects)

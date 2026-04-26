@@ -36,6 +36,7 @@ public class HUDController : MonoBehaviour
     private PlayerHealth _localHealth;
     private WeaponBase   _localWeapon;
     private WaveManager  _waveManager;
+    private NetworkRunner _networkRunner;
 
     private readonly Dictionary<PlayerRef, TMP_Text> _scoreRows = new();
 
@@ -67,7 +68,8 @@ public class HUDController : MonoBehaviour
 
     private void Start()
     {
-        _waveManager = FindFirstObjectByType<WaveManager>();
+        _waveManager   = FindFirstObjectByType<WaveManager>();
+        _networkRunner = FindFirstObjectByType<NetworkRunner>();
         _gameOverPanel?.SetActive(false);
         _reloadBar?.gameObject.SetActive(false);
     }
@@ -118,7 +120,7 @@ public class HUDController : MonoBehaviour
 
         if (reloading && _reloadBar != null)
         {
-            float elapsed  = _localWeapon.Data.ReloadTime - _localWeapon.ReloadTimer.RemainingTime(FindFirstObjectByType<NetworkRunner>()).GetValueOrDefault();
+            float elapsed = _localWeapon.Data.ReloadTime - _localWeapon.ReloadTimer.RemainingTime(_networkRunner).GetValueOrDefault();
             _reloadBar.value = Mathf.Clamp01(elapsed / _localWeapon.Data.ReloadTime);
         }
     }

@@ -98,11 +98,11 @@ public class PlayerHealth : NetworkBehaviour
 
     private static void OnHPChanged(Changed<PlayerHealth> changed)
     {
-        int previous = changed.GetPrevious().HP;
-        int current  = changed.Behaviour.HP;
-        int delta    = previous - current;
+        int previous   = changed.GetPrevious().HP;
+        int current    = changed.Behaviour.HP;
+        int damageTaken = previous - current; // positive when the player took damage
 
-        if (delta > 0)
-            OnPlayerDamaged?.Invoke(changed.Behaviour, delta);
+        if (damageTaken > 0)
+            OnPlayerDamaged?.Invoke(changed.Behaviour, damageTaken);
     }
 }

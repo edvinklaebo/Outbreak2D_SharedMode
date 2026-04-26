@@ -61,20 +61,15 @@ public class GameLauncher : MonoBehaviour, INetworkRunnerCallbacks
 
         pi.MoveDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
-        // Aim toward mouse cursor in world space
+        // Aim toward mouse cursor in world space, relative to the local player's position
         if (Camera.main != null)
         {
             Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mouseWorld.z = 0f;
-            pi.AimDirection = ((Vector2)(mouseWorld - Camera.main.transform.position)).normalized;
 
-            // More precise: aim relative to player position
             NetworkObject playerObj = runner.GetPlayerObject(runner.LocalPlayer);
-            if (playerObj != null)
-            {
-                Vector2 toMouse = (Vector2)(mouseWorld - playerObj.transform.position);
-                pi.AimDirection = toMouse.normalized;
-            }
+            Vector2 origin = playerObj != null ? (Vector2)playerObj.transform.position : Vector2.zero;
+            pi.AimDirection = ((Vector2)mouseWorld - origin).normalized;
         }
 
         pi.Shoot  = Input.GetButton("Fire1");

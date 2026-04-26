@@ -63,6 +63,7 @@ public class WaveManager : NetworkBehaviour
 
         if (State == GameState.WaitingForPlayers)
         {
+            // ActivePlayers is IEnumerable; LINQ Count() is the correct API here
             if (AreAllPlayersDead() == false && Runner.ActivePlayers.Count() > 0)
                 BeginCountdown();
         }

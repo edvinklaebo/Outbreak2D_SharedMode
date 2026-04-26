@@ -92,7 +92,9 @@ public class AudioManager : MonoBehaviour
                 ? Instantiate(_positionalSourcePrefab, transform)
                 : gameObject.AddComponent<AudioSource>();
 
-            src.spatialBlend = 1f; // 3D audio (works in 2D too via 2D camera)
+            // spatialBlend = 0 keeps audio fully 2D (orthographic camera).
+            // Set to 1 if you add 3D spatialization via an Audio Listener on the camera.
+            src.spatialBlend = 0f;
             src.playOnAwake  = false;
             _pool[i] = src;
         }

@@ -14,8 +14,8 @@ public class ZombieHealth : NetworkBehaviour
     [Networked]
     public NetworkBool IsDead { get; private set; }
 
-    private ZombieData _data;
-    private Animator   _animator;
+    [SerializeField] private ZombieData _data;
+    [SerializeField] private Animator   _animator;
 
     private static readonly int DeathHash = Animator.StringToHash("Death");
 
@@ -76,7 +76,7 @@ public class ZombieHealth : NetworkBehaviour
     private static void OnHPChanged(Changed<ZombieHealth> changed)
     {
         // Optional: trigger hit VFX on all clients
-        if (!changed.Behaviour.IsDead)
-            AudioManager.Instance?.PlaySFX(changed.Behaviour._data?.GrowlSFX, changed.Behaviour.transform.position);
+        if (!changed.Behaviour.IsDead && changed.Behaviour._data?.GrowlSFX != null)
+            AudioManager.Instance?.PlaySFX(changed.Behaviour._data.GrowlSFX, changed.Behaviour.transform.position);
     }
 }

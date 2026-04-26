@@ -25,7 +25,8 @@ public class ZombieController : NetworkBehaviour
     private ZombieHealth  _health;
     private float         _attackCooldown;
     private int           _retargetTick;
-    private const int     RetargetEveryTicks = 30; // ~0.5 s at 60 tick rate
+    private const int     RetargetEveryTicks = 30;  // ~0.5 s at 60 tick rate
+    private const float   StoppingDistanceFactor = 0.9f; // stop slightly before melee range
 
     private static readonly int SpeedHash = Animator.StringToHash("Speed");
 
@@ -43,7 +44,7 @@ public class ZombieController : NetworkBehaviour
         _agent.updateRotation  = false;
         _agent.updateUpAxis    = false;
         _agent.speed           = _data != null ? _data.MoveSpeed : 2.5f;
-        _agent.stoppingDistance = _data != null ? _data.AttackRange * 0.9f : 0.7f;
+        _agent.stoppingDistance = _data != null ? _data.AttackRange * StoppingDistanceFactor : 0.7f;
     }
 
     public override void FixedUpdateNetwork()
