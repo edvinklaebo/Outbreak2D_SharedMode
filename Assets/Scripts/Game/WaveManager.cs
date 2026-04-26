@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using Fusion;
 using UnityEngine;
 
@@ -63,8 +63,7 @@ public class WaveManager : NetworkBehaviour
 
         if (State == GameState.WaitingForPlayers)
         {
-            // ActivePlayers is IEnumerable; LINQ Count() is the correct API here
-            if (AreAllPlayersDead() == false && Runner.ActivePlayers.Count() > 0)
+            if (AreAllPlayersDead() == false && Runner.ActivePlayers.ToList().Any())
                 BeginCountdown();
         }
     }
@@ -159,7 +158,7 @@ public class WaveManager : NetworkBehaviour
         if (AreAllPlayersDead())
         {
             State = GameState.GameOver;
-            return;
+            yield break;
         }
 
         StartNextWave();

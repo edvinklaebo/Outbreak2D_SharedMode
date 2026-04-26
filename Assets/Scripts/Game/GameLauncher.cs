@@ -47,7 +47,7 @@ public class GameLauncher : MonoBehaviour, INetworkRunnerCallbacks
 
         // Load the game scene for everyone
         if (Runner.IsSharedModeMasterClient)
-            _runner.LoadScene(SceneRef.FromIndex(SceneUtility.GetBuildIndexByScenePath(_gameSceneName)));
+            await _runner.LoadScene(SceneRef.FromIndex(SceneUtility.GetBuildIndexByScenePath(_gameSceneName)));
     }
 
     // Convenience property exposed to UI
