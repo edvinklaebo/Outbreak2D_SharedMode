@@ -28,7 +28,7 @@ public class WaveManager : NetworkBehaviour
     [SerializeField] private int   _tanksFromWave     = 8;
 
     // ── Networked state ───────────────────────────────────────────────────────
-    [Networked(OnChanged = nameof(OnStateChanged))]
+    [Networked, OnChangedRender(nameof(OnStateChanged))]
     public GameState State { get; private set; } = GameState.WaitingForPlayers;
 
     [Networked] public int CurrentWave       { get; private set; }
@@ -182,9 +182,9 @@ public class WaveManager : NetworkBehaviour
 
     // ── Networked property callbacks ──────────────────────────────────────────
 
-    private static void OnStateChanged(Changed<WaveManager> changed)
+    private void OnStateChanged()
     {
-        OnGameStateChanged?.Invoke(changed.Behaviour.State);
+        OnGameStateChanged?.Invoke(State);
     }
 }
 

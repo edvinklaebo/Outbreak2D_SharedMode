@@ -12,7 +12,7 @@ public class PlayerHealth : NetworkBehaviour
     [SerializeField] private int _maxHP = 100;
     [SerializeField] private float _respawnDelay = 5f;
 
-    [Networked(OnChanged = nameof(OnHPChanged))]
+    [Networked, OnChangedRender(nameof(OnHPChanged))]
     public int HP { get; private set; }
 
     [Networked]
@@ -96,13 +96,11 @@ public class PlayerHealth : NetworkBehaviour
 
     // ── Networked property callbacks ─────────────────────────────────────────
 
-    private static void OnHPChanged(Changed<PlayerHealth> changed)
+    private void OnHPChanged(int previousHP)
     {
-        int previous   = changed.GetPrevious().HP;
-        int current    = changed.Behaviour.HP;
-        int damageTaken = previous - current; // positive when the player took damage
+        int damageTaken = previousHP - HP; // positive when the player took damage
 
         if (damageTaken > 0)
-            OnPlayerDamaged?.Invoke(changed.Behaviour, damageTaken);
+            OnPlayerDamaged?.Invoke(this, damageTaken);
     }
 }

@@ -8,7 +8,7 @@ using UnityEngine;
 /// </summary>
 public class ZombieHealth : NetworkBehaviour
 {
-    [Networked(OnChanged = nameof(OnHPChanged))]
+    [Networked, OnChangedRender(nameof(OnHPChanged))]
     public int HP { get; private set; }
 
     [Networked]
@@ -73,10 +73,10 @@ public class ZombieHealth : NetworkBehaviour
 
     // ── Networked property callbacks ─────────────────────────────────────────
 
-    private static void OnHPChanged(Changed<ZombieHealth> changed)
+    private void OnHPChanged()
     {
         // Optional: trigger hit VFX on all clients
-        if (!changed.Behaviour.IsDead && changed.Behaviour._data?.GrowlSFX != null)
-            AudioManager.Instance?.PlaySFX(changed.Behaviour._data.GrowlSFX, changed.Behaviour.transform.position);
+        if (!IsDead && _data?.GrowlSFX != null)
+            AudioManager.Instance?.PlaySFX(_data.GrowlSFX, transform.position);
     }
 }
