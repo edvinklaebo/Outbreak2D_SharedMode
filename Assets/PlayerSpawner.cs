@@ -1,17 +1,4 @@
-using UnityEngine;
-using Fusion;
+// This file has been superseded by Assets/Scripts/Player/PlayerSpawner.cs
+// It is kept here temporarily to avoid losing the Unity meta reference.
+// Remove this file and re-assign the scene object to use the new script.
 
-public class PlayerSpawner : SimulationBehaviour, IPlayerJoined
-{
-    [SerializeField] private GameObject _player;
-    
-    public void PlayerJoined(PlayerRef player)
-    {
-        Debug.Log("PlayerJoined");
-        if (player != Runner.LocalPlayer)
-            return;
-
-        Debug.Log("Spawning Player: " + player.PlayerId);
-        Runner.Spawn(_player);
-    }
-}
