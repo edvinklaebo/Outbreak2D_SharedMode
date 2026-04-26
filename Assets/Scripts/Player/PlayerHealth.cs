@@ -27,6 +27,7 @@ public class PlayerHealth : NetworkBehaviour
 
     private PlayerAnimator _playerAnimator;
     private PlayerMovement _playerMovement;
+    private int _prevHP;
 
     public override void Spawned()
     {
@@ -35,6 +36,8 @@ public class PlayerHealth : NetworkBehaviour
 
         if (HasStateAuthority)
             HP = _maxHP;
+
+        _prevHP = HP;
     }
 
     /// <summary>
@@ -96,9 +99,10 @@ public class PlayerHealth : NetworkBehaviour
 
     // ── Networked property callbacks ─────────────────────────────────────────
 
-    private void OnHPChanged(int previousHP)
+    private void OnHPChanged()
     {
-        int damageTaken = previousHP - HP; // positive when the player took damage
+        int damageTaken = _prevHP - HP; // positive when the player took damage
+        _prevHP = HP;
 
         if (damageTaken > 0)
             OnPlayerDamaged?.Invoke(this, damageTaken);
