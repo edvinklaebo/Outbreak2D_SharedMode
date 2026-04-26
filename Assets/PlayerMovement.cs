@@ -1,16 +1,4 @@
-using UnityEngine;
-using Fusion;
+// This file has been superseded by Assets/Scripts/Player/PlayerMovement.cs
+// It is kept here temporarily to avoid losing the Unity meta reference.
+// Remove this file and re-assign the PlayerChar prefab to use the new script.
 
-public class PlayerMovement : NetworkBehaviour
-{
-    [SerializeField] private CharacterController _controller;
-    
-    public float PlayerSpeed = 2f;
-    
-    public override void FixedUpdateNetwork()
-    {
-        var move = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0) * Runner.DeltaTime * PlayerSpeed;
-
-        _controller.Move(move);
-    }
-}
