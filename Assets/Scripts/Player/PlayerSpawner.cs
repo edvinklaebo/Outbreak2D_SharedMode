@@ -27,9 +27,12 @@ public class PlayerSpawner : SimulationBehaviour, IPlayerJoined, IPlayerLeft
                 if (r != null && r.IsRunning)
                 {
                     r.AddGlobal(this);
-                    break;
+                    return;
                 }
             }
+
+            Debug.LogWarning("[PlayerSpawner] No running NetworkRunner found during Start(). " +
+                             "Ensure a Fusion session is active before the game scene loads.");
         }
     }
 
