@@ -17,7 +17,7 @@ public class GameLauncher : MonoBehaviour, INetworkRunnerCallbacks
 
     [Header("Session")]
     [SerializeField] private string _defaultRoomName = "OutbreakRoom";
-    [SerializeField] private string _gameSceneName   = "GameScene";
+    [SerializeField] private string _gameSceneName   = "Assets/Scenes/Game";
 
     private NetworkRunner _runner;
 
@@ -27,6 +27,9 @@ public class GameLauncher : MonoBehaviour, INetworkRunnerCallbacks
     {
         if (_runner != null)
             return;
+
+        // Keep this object alive across scene loads so OnInput keeps working.
+        DontDestroyOnLoad(gameObject);
 
         _runner = Instantiate(_runnerPrefab);
         _runner.AddCallbacks(this);

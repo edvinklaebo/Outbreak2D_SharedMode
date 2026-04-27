@@ -14,9 +14,35 @@ public class PlayerSpawner : SimulationBehaviour, IPlayerJoined, IPlayerLeft
     // Track spawned players so we can despawn on leave
     private readonly Dictionary<PlayerRef, NetworkObject> _spawnedPlayers = new();
 
+    private void Start()
+    {
+        // When this spawner lives on a plain scene GameObject (not on the NetworkRunner's
+        // own GO), Fusion won't auto-register it.  We call AddGlobal so the runner
+        // invokes IPlayerJoined for all currently-connected players immediately, and for
+        // every player that joins afterwards.
+        if (Runner == null)
+        {
+            foreach (var r in NetworkRunner.Instances)
+            {
+                if (r != null && r.IsRunning)
+                {
+                    r.AddGlobal(this);
+                    return;
+                }
+            }
+
+            Debug.LogWarning("[PlayerSpawner] No running NetworkRunner found during Start(). " +
+                             "Ensure a Fusion session is active before the game scene loads.");
+        }
+    }
+
     public void PlayerJoined(PlayerRef player)
     {
         if (player != Runner.LocalPlayer)
+            return;
+
+        // Guard against being called twice for the same player.
+        if (_spawnedPlayers.ContainsKey(player))
             return;
 
         SpawnPlayer(player);
